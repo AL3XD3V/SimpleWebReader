@@ -1,0 +1,2 @@
+proxy=server2
+port=3128
