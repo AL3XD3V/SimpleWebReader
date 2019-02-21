@@ -8,13 +8,16 @@ public class Settings {
 
     private static Map<String, String> settings = new HashMap<>();
 
-    public static Map<String, String> getSettings() throws IOException {
+    public Settings() throws IOException {
         FileInputStream inputStream = new FileInputStream(System.getProperty("user.dir") + "\\settings.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line;
         while ((line = reader.readLine()) != null) {
             settings.put(parseKey(line), parseValue(line));
         }
+    }
+
+    public static Map<String, String> getSettings() {
         return settings;
     }
 
