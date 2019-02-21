@@ -27,6 +27,7 @@ public class Connector {
             urlConnection = (HttpURLConnection) url.openConnection();
         }
         urlConnection.setRequestMethod("GET");
+        urlConnection.setRequestProperty("User-agent", "Mozilla/4.1");
         urlConnection.connect();
         return urlConnection;
     }
