@@ -6,24 +6,35 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        Settings settings = new Settings();
+    public static void main(String[] args) {
+        Settings settings = null;
+        try {
+            settings = new Settings();
+        } catch (IOException e) {
+            System.out.println("Troubles with settings file!");
+        }
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Enter url to parse:");
+            System.out.println("Enter url to parse or type \"exit\" to stop process:");
             String url = scanner.nextLine();
-            System.out.println("Response from " + url + " :");
-            Connector connector = new Connector(settings.getSettings(), new URL(url));
-            WebReader webReader = new WebReader(connector.getConnection());
-            BufferedReader reader = webReader.getReader();
-            String requestLine;
-            int count = 0;
-            while ((requestLine = reader.readLine()) != null) {
-                System.out.println("LINE (L: " + requestLine.length() + "):\t" + requestLine);
-                count++;
+            if (url.equals("exit")) {
+                break;
             }
-            System.out.println("Number of lines in response: " + count);
-            connector.closeConnection();
+            try {
+                Connector connector = new Connector(settings.getSettings(), new URL(url));
+                WebReader webReader = new WebReader(connector.getConnection());
+                BufferedReader reader = webReader.getReader();
+                String requestLine;
+                int count = 1;
+                System.out.println("Response from " + url + " :");
+                while ((requestLine = reader.readLine()) != null) {
+                    System.out.println("LINE #" + count + " (L: " + requestLine.length() + "):\t" + requestLine);
+                    count++;
+                }
+                connector.closeConnection();
+            } catch (IOException e) {
+                System.out.println("Not correct url or other error occured!");
+            }
         }
     }
 
